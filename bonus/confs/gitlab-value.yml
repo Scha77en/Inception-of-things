@@ -1,0 +1,116 @@
+global:
+  hosts:
+    domain: localhost
+    https: false
+    gitlab:
+      name: localhost
+      https: false
+      port: 8181
+  edition: ce
+  ingress:
+    enabled: false
+  kas:
+    enabled: false
+  gatewayApi:
+    enabled: false
+    installEnvoy: false
+  psql:
+    host: gitlab-postgresql
+    database: gitlabhq_production
+    username: gitlab
+    password:
+      secret: gitlab-postgresql
+      key: password
+  redis:
+    host: gitlab-redis-master
+    password:
+      enabled: false
+    livenessProbe:
+      initialDelaySeconds: 120
+    readinessProbe:
+      initialDelaySeconds: 120
+  appConfig:
+    lfs:
+      enabled: false
+    artifacts:
+      enabled: false
+    uploads:
+      enabled: false
+    packages:
+      enabled: false
+
+nginx-ingress:
+  enabled: false
+
+ai-gateway:
+  enabled: false
+
+gitlab-pages:
+  enabled: false
+
+spamcheck:
+  enabled: false
+
+mailroom:
+    enabled: false
+
+installCertmanager: false
+
+certmanager-issuer:
+  email: hsaktiwy@gmail.com
+
+grafana:
+  enabled: false
+
+registry:
+  enabled: false
+
+prometheus:
+  install: false
+
+gitlab-runner:
+  install: false
+
+gitlab-exporter:
+  enabled: false
+
+gitlab:
+  webservice:
+    minReplicas: 1
+    maxReplicas: 1
+    resources:
+      requests:
+        memory: 1700Mi
+        cpu: 100m
+      limits:
+        memory: 2500Mi
+  sidekiq:
+    minReplicas: 1
+    maxReplicas: 1
+    resources:
+      requests:
+        memory: 800Mi
+        cpu: 100m
+      limits:
+        memory: 1200Mi
+  toolbox:
+    enabled: false
+  gitaly:
+    minReplicas: 1
+    maxReplicas: 1
+    persistence:
+      enabled: false
+    resources:
+      requests:
+        memory: 208Mi
+        cpu: 100m
+      limits:
+        memory: 286Mi
+
+  gitlab-shell:
+    minReplicas: 1
+    maxReplicas: 1
+    resources:
+      requests:
+        memory: 200Mi
+        cpu: 100m

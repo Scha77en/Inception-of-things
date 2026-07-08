@@ -1,0 +1,31 @@
+Vagrant.configure("2") do |config|
+    config.vm.box= "debian/bookworm64" # lasted stable debian release and it is minimalist, perfect for our needs
+    # define the server/ control plane components
+    config.vm.provision "shell", inline: <<-SHELL
+        echo "Installing the necessary dependencies (curl , etc.)"
+        sudo apt-get update
+        sudo apt-get install -y curl net-tools
+    SHELL
+    
+    config.vm.define "shamsateS" do |control|
+        control.vm.hostname = "shamsateS"
+        control.vm.network "private_network", ip: "192.168.56.110"
+        control.vm.provider "virtualbox" do |vb|
+            vb.memory = "2048"
+            vb.cpus = 2
+        end
+        control.vm.provision "shell", path: "scripts/k3s-server.sh"
+    end
+
+    # define the ServerWorker/ worker plane components
+    config.vm.define "shamsateSW" do |worker|
+        worker.vm.hostname = "shamsateSW"
+        worker.vm.network "private_network", ip: "192.168.56.111"
+        worker.vm.provider "virtualbox" do |vb|
+            vb.memory = "2048"
+            vb.cpus = 2
+        end
+        worker.vm.provision "shell", path: "scripts/k3s-worker.sh", args: ["192.168.56.110"]
+    end
+end
+
